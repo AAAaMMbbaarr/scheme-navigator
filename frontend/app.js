@@ -142,17 +142,29 @@ function readAloud(text) {
 }
 
 // ---------- rendering ----------
-function fmt(v) {
+// Display label for a profile value in the selected language (display only: the profile keeps canonical English values).
+function valueLabel(field, v) {
+  const keys = VALUE_KEYS[field];
+  if (!keys) return humanize(v);                         // free text (e.g. crop) or numbers: shown as-is
+  let canon = String(v).trim().toLowerCase();
+  if (field === "state" && STATE_ALIASES[canon]) canon = STATE_ALIASES[canon].toLowerCase();
+  const i = keys.findIndex((k) => k.toLowerCase() === canon);
+  if (i < 0) return humanize(v);                         // unknown value: never invent a translation
+  const own = (VALUE_LABELS[lang] || {})[field], en = (VALUE_LABELS.en || {})[field];
+  return (own && own[i]) || (en && en[i]) || humanize(v);
+}
+
+function fmt(field, v) {
   const t = tr();
   if (v === true) return "✓ " + t.yes;
   if (v === false) return "✗ " + t.no;
-  return humanize(v);
+  return valueLabel(field, v);
 }
 
 function renderProfile(p) {
   const dl = $("profile"); dl.replaceChildren();
   Object.entries(p).filter(([, v]) => v !== null).forEach(([k, v]) => {
-    const d = el("div"); d.append(el("dt", tr().fields[k] || k), el("dd", fmt(v))); dl.append(d);
+    const d = el("div"); d.append(el("dt", tr().fields[k] || k), el("dd", fmt(k, v))); dl.append(d);
   });
   $("profile-sec").classList.toggle("hidden", dl.children.length === 0);
 }

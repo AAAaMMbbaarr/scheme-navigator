@@ -54,14 +54,14 @@ const HI = "मैं बिहार का किसान हूँ और �
     await setLang(ui, "bn");
     ok("Bengali UI title", ui.$("t-title").textContent.includes("সরকারি"));
     await say(ui, BN);
-    ok("Bengali extraction -> WB / 2 acres", prof(ui)["রাজ্য"] === "West Bengal" && prof(ui)["জমি (একর)"] === "2", JSON.stringify(prof(ui)));
+    ok("Bengali extraction -> WB / 2 acres", prof(ui)["রাজ্য"] === "পশ্চিমবঙ্গ" && prof(ui)["জমি (একর)"] === "2", JSON.stringify(prof(ui)));
     ok("Bengali explanations rendered (mock tag)", ui.$("cards").textContent.includes("[Bengali]"));
     ok("scheme names untouched", ui.$("cards").textContent.includes("PM-KISAN"));
     ok("no AI-down notice on success", ui.$("notice").classList.contains("hidden"));
     await setLang(ui, "hi");
     ok("switch to Hindi RESETS the screen (no re-explain, language kept)", ui.$("cards").children.length === 0 && ui.$("profile").children.length === 0 && ui.$("input").value === "" && ui.$("lang").value === "hi");
     await say(ui, HI);
-    ok("Hindi extraction -> Bihar / 2 acres", prof(ui)["राज्य"] === "Bihar" && prof(ui)["ज़मीन (एकड़)"] === "2", JSON.stringify(prof(ui)));
+    ok("Hindi extraction -> Bihar / 2 acres", prof(ui)["राज्य"] === "बिहार" && prof(ui)["ज़मीन (एकड़)"] === "2", JSON.stringify(prof(ui)));
     await setLang(ui, "en");
     ok("back to English: clean screen again", ui.$("cards").children.length === 0 && Object.keys(prof(ui)).length === 0 && ui.$("lang").value === "en");
     await setLang(ui, "ur");
@@ -84,7 +84,7 @@ const HI = "मैं बिहार का किसान हूँ और �
     await setLang(ui, "bn"); ui.$("speak").click(); await sleep(120);
     ok("language-not-supported message shown in Bengali", ui.$("speech-note").textContent.includes("ভয়েস ইনপুট সমর্থিত নয়"), ui.$("speech-note").textContent);
     await say(ui, BN);
-    ok("typing still works after voice failure", prof(ui)["রাজ্য"] === "West Bengal");
+    ok("typing still works after voice failure", prof(ui)["রাজ্য"] === "পশ্চিমবঙ্গ");
 
     // no SpeechRecognition at all
     ui = await open();
