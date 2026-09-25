@@ -1,0 +1,42 @@
+id: krishak_bandhu
+name: Krishak Bandhu (West Bengal)
+state: West Bengal
+description: >-
+  West Bengal Department of Agriculture scheme giving yearly financial assistance to
+  farmers (in two Kharif/Rabi instalments) and a one-time death benefit to the nominee
+  of a farmer who dies aged 18–60. Amounts vary with land held; see the official portal.
+eligibility_rules:
+  - field: state
+    operator: equals
+    value: West Bengal
+    importance: required
+    description: Resident of West Bengal
+  - field: occupation
+    operator: equals
+    value: farmer
+    importance: required
+    description: Cultivates land as a farmer
+  - field: land_area_acres
+    operator: gt
+    value: 0
+    importance: required
+    description: Cultivates some agricultural land
+manual_verification:
+  - description: >-
+      Cultivator must be recorded in West Bengal land records (owner or recorded bargadar/sharecropper)
+      and registered on the Krishak Bandhu portal.
+  - description: Death benefit only applies if the farmer was aged 18–60 at death.
+  - description: Confirm the scheme is still operating with the same terms under the current state government.
+required_documents:
+  - Aadhaar
+  - Bank passbook / account details
+  - Land ownership / land record
+  - Passport-size photograph
+official_url: https://krishakbandhu.wb.gov.in/
+last_verified: 2026-09-25
+verification_notes: >-
+  Domain krishakbandhu.wb.gov.in confirmed as the West Bengal Department of Agriculture portal via
+  search results on 2026-09-25 (its own pages could not be fetched). Eligibility summary (WB resident,
+  registered farmer, bargadars included, age 18-60 for death benefit) comes from secondary sources
+  quoting the portal; the exact benefit amounts are deliberately NOT stored because sources conflict.
+  Document list is indicative. NEEDS confirmation against the official guidelines before any real use.

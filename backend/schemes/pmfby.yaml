@@ -1,0 +1,31 @@
+id: pmfby
+name: PMFBY (Pradhan Mantri Fasal Bima Yojana – crop insurance)
+state: India
+description: >-
+  Subsidised crop insurance against yield loss from non-preventable natural risks.
+  All farmers, including sharecroppers and tenant farmers, growing notified crops in
+  notified areas can enrol, provided they have an insurable interest in the crop.
+eligibility_rules:
+  - field: occupation
+    operator: equals
+    value: farmer
+    importance: required
+    description: Grows crops as a farmer (owner, tenant or sharecropper)
+manual_verification:
+  - description: The crop you grow must be a notified crop in a notified area for the current season.
+  - description: >-
+      Non-loanee farmers must show land records (e.g. Record of Rights, Land Possession Certificate)
+      or, for tenants/sharecroppers, the lease/contract or other document accepted by the state.
+  - description: Enrol before the season's cut-off date (varies by crop and season).
+required_documents:
+  - Aadhaar
+  - Bank passbook / account details
+  - Land ownership / land record
+  - Crop details
+official_url: https://pmfby.gov.in/
+last_verified: 2026-09-25
+verification_notes: >-
+  Eligibility (all farmers incl. sharecroppers/tenants, notified crops/areas, insurable interest) and
+  non-loanee land-record requirement taken from search results quoting the PMFBY Operational Guidelines
+  (pmfby.gov.in/pdf/Revised_Operational_Guidelines.pdf) on 2026-09-25; the PDF itself was not read in full.
+  Document list is indicative.

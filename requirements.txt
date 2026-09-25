@@ -1,0 +1,9 @@
+# Runtime dependencies only (what Render installs). Versions are the ones the test suite runs against.
+fastapi==0.141.1
+uvicorn==0.53.0
+pydantic==2.13.5
+PyYAML==6.0.1
+httpx==0.28.1
+python-dotenv==1.2.3
+# imported by backend/llm.py for the optional Anthropic provider (LLM_PROVIDER=anthropic)
+anthropic==1.8.0

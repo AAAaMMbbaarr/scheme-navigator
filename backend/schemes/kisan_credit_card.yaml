@@ -1,0 +1,28 @@
+id: kisan_credit_card
+name: Kisan Credit Card (KCC)
+state: India
+description: >-
+  Short-term credit for crop cultivation and related needs, issued by banks. Farmers including
+  tenant farmers, oral lessees and sharecroppers (via self-declaration) and joint liability groups
+  can get it. Interest subvention and prompt-repayment incentive can lower the effective interest rate.
+eligibility_rules:
+  - field: occupation
+    operator: equals
+    value: farmer
+    importance: required
+    description: Cultivates land as a farmer (owner, tenant, oral lessee or sharecropper)
+manual_verification:
+  - description: The bank decides the credit limit and may ask for security above a certain limit.
+  - description: Interest subvention needs Aadhaar details to be submitted to the bank.
+required_documents:
+  - Aadhaar
+  - Land ownership / land record
+  - Crop details
+  - Passport-size photograph
+official_url: https://pmkisan.gov.in/documents/Kcc.pdf
+last_verified: 2026-09-25
+verification_notes: >-
+  Eligible categories (incl. tenants/sharecroppers) come from search results summarising the scheme;
+  the document list (application form, 2 photographs, land-holding proof, cropping pattern, security
+  above the limit) is from SBI's KCC page via search on 2026-09-25. Limits and subvention rates change
+  by year, so none are stored. The linked official KCC circular PDF was not read in full.

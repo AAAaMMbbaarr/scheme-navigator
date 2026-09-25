@@ -1,0 +1,45 @@
+id: lakshmir_bhandar
+name: Lakshmir Bhandar (West Bengal)
+state: West Bengal
+description: >-
+  Monthly income support to women of West Bengal aged 25–60. Apply offline at the BDO or
+  Municipality office with the prescribed form.
+eligibility_rules:
+  - field: state
+    operator: equals
+    value: West Bengal
+    importance: required
+    description: Resident of West Bengal
+  - field: gender
+    operator: equals
+    value: female
+    importance: required
+    description: Applicant is a woman
+  - field: age
+    operator: gte
+    value: 25
+    importance: required
+    description: Aged 25 or above
+  - field: age
+    operator: lte
+    value: 60
+    importance: required
+    description: Aged 60 or below
+  - field: is_govt_employee
+    operator: is_false
+    importance: verify
+    description: Not a government employee receiving regular salary or pension
+manual_verification:
+  - description: Applicant must have her own Aadhaar and a single bank account.
+  - description: Household enrolment under Swasthya Sathi and household economic status are also mentioned by secondary sources; confirm at the BDO/Municipality office.
+  - description: Confirm the scheme is still operating with the same terms under the current state government.
+required_documents:
+  - Aadhaar
+  - Bank passbook / account details
+official_url: https://s24pgs.gov.in/lakshmir-bhandar/
+last_verified: 2026-09-25
+verification_notes: >-
+  Core criteria (woman, WB resident, age 25-60, not a salaried/pensioned government employee, own Aadhaar
+  and single bank account, apply at BDO/Municipality) read from the South 24 Parganas district government
+  page on 2026-09-25. Its document list is not published there, so only Aadhaar and bank details are listed.
+  Benefit amounts are not stored. Search results say the scheme continues in the 2026-27 state budget.

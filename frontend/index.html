@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scheme Navigator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600;700&family=Noto+Sans+Gujarati:wght@400;600;700&family=Noto+Sans+Kannada:wght@400;600;700&family=Noto+Sans+Oriya:wght@400;600;700&family=Noto+Sans+Malayalam:wght@400;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <div class="wrap bar"><strong class="brand">Scheme Navigator</strong></div>
+</header>
+
+<main class="wrap">
+  <h1 id="t-title"></h1>
+  <p id="t-sub" class="muted"></p>
+
+  <div class="langrow">
+    <label for="lang" id="t-chooseLang">Choose your language</label>
+    <select id="lang" aria-describedby="lang-note"></select>
+  </div>
+
+  <section class="card">
+    <label for="input" id="t-label" class="sr-only"></label>
+    <textarea id="input" rows="4" maxlength="2000"></textarea>
+    <div class="actions">
+      <button id="speak" class="big secondary" type="button" aria-pressed="false"></button>
+      <button id="go" class="big primary" type="button"></button>
+    </div>
+    <p id="speech-note" class="muted small" role="status" aria-live="polite"></p>
+    <div id="examples" class="chips"></div>
+  </section>
+
+  <div id="status" role="status" aria-live="polite" class="muted"></div>
+  <div id="notice" class="notice hidden" role="alert"><p id="notice-main"></p><p id="notice-detail" class="small"></p></div>
+
+  <section id="update-sec" class="card hidden" aria-live="polite">
+    <h2 id="t-update-title"></h2>
+    <ul id="questions"></ul>
+    <p class="muted small" id="t-update-hint"></p>
+    <label for="answer-input" class="sr-only" id="t-answer-label"></label>
+    <textarea id="answer-input" rows="2" maxlength="2000"></textarea>
+    <div class="actions">
+      <button id="answer-speak" class="big secondary" type="button" aria-pressed="false"></button>
+      <button id="answer-go" class="big primary" type="button"></button>
+    </div>
+    <p id="answer-note" class="muted small" role="status" aria-live="polite"></p>
+  </section>
+
+  <section id="profile-sec" class="hidden">
+    <h2 id="t-profile"></h2>
+    <dl id="profile" class="profile"></dl>
+  </section>
+
+  <section id="map-sec" class="hidden">
+    <h2 id="t-map"></h2>
+    <p id="voice-note" class="muted small" role="status"></p>
+    <ul id="legend" class="legend"></ul>
+    <div id="summary" class="summary hidden"></div>
+    <div id="cards"></div>
+  </section>
+
+  <section id="docs-sec" class="hidden card">
+    <h2 id="t-docs"></h2>
+    <ul id="docs" class="docs"></ul>
+  </section>
+
+  <p id="disclaimer" class="disclaimer hidden" role="note"></p>
+</main>
+<footer class="wrap site-footer">
+  <p id="site-disclaimer" role="note">Independent project: this is not a government website and is not affiliated with any government body. Results are eligibility guidance, not an official determination. Always verify current requirements on the official source linked for each scheme.</p>
+</footer>
+<script src="/static/strings.js"></script>
+<script src="/static/voice.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

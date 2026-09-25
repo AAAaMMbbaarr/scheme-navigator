@@ -1,0 +1,42 @@
+id: pm_kisan
+name: PM-KISAN (Pradhan Mantri Kisan Samman Nidhi)
+state: India
+description: >-
+  Income support of ₹6,000 per year, paid in three instalments of ₹2,000,
+  to land-holding farmer families (family = husband, wife and minor children).
+eligibility_rules:
+  - field: land_ownership
+    operator: equals
+    value: owner
+    importance: required
+    description: Family holds cultivable land in its own name
+  - field: land_area_acres
+    operator: gt
+    value: 0
+    importance: required
+    description: Holds some agricultural land
+  - field: is_income_taxpayer
+    operator: is_false
+    importance: verify
+    description: No family member paid income tax in the last assessment year
+  - field: is_govt_employee
+    operator: is_false
+    importance: verify
+    description: Not a serving/retired government employee or pensioner (Group D / Class IV staff are exempt)
+manual_verification:
+  - description: >-
+      Not an institutional landholder, a current/former holder of a constitutional post
+      (minister, MP, MLA, mayor, district panchayat chairperson), a pensioner receiving
+      ₹10,000 or more per month, or a registered professional (doctor, engineer, lawyer, CA, architect).
+  - description: Land record must be updated and eKYC (Aadhaar-based) completed on the PM-KISAN portal.
+required_documents:
+  - Aadhaar
+  - Bank passbook / account details
+  - Land ownership / land record
+  - Mobile number linked to Aadhaar
+official_url: https://pmkisan.gov.in/
+last_verified: 2026-09-25
+verification_notes: >-
+  Eligibility, exclusions and registration requirements (new farmer registration, mandatory eKYC,
+  bank linkage) read from the official pmkisan.gov.in home page on 2026-09-25. The exact list of
+  required documents is the standard set for registration; confirm on the portal.

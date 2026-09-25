@@ -1,0 +1,7 @@
+{
+  "name": "scheme-navigator-frontend-tests",
+  "private": true,
+  "description": "Dev-only: jsdom for the frontend regression tests (npm test). The app itself has no Node dependencies.",
+  "scripts": { "test": "node --test tests/*.test.js" },
+  "devDependencies": { "jsdom": "^26.0.0" }
+}

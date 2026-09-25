@@ -1,0 +1,28 @@
+id: swasthya_sathi
+name: Swasthya Sathi (West Bengal health cover)
+state: West Bengal
+description: >-
+  Cashless health cover for secondary and tertiary care up to ₹5 lakh per family per year, with the
+  premium paid by the state government. A smart card is issued at enrolment.
+eligibility_rules:
+  - field: state
+    operator: equals
+    value: West Bengal
+    importance: required
+    description: Permanent resident of West Bengal
+  - field: is_govt_employee
+    operator: is_false
+    importance: verify
+    description: Not a state government employee/pensioner covered under the West Bengal Health Scheme
+manual_verification:
+  - description: Enrolment eligibility categories are published on the official portal; confirm yours there or on the helpline 18003455384.
+  - description: Confirm the scheme is still operating with the same terms under the current state government.
+required_documents:
+  - Aadhaar
+official_url: https://swasthyasathi.gov.in/
+last_verified: 2026-09-25
+verification_notes: >-
+  The official portal confirms the scheme, the ₹5 lakh family cover and the helpline, but its eligibility list
+  and documents were not in the page text we could read. The "West Bengal resident" and "not covered under the
+  WB Health Scheme 2008" conditions come from secondary sources (Aditya Birla Capital, AngelOne, Star Health
+  via search). The document list is unconfirmed: only Aadhaar is listed. NEEDS confirmation from the portal.
