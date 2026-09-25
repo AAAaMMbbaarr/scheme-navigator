@@ -17,7 +17,7 @@ and **links to the official sources**. Eligibility is decided by **auditable cod
 
 <sub>Hosted on Render's free tier: the first load after a quiet period can take about a minute to wake up.</sub>
 
-<img src="docs/screenshot.png" alt="Scheme Navigator: choose from 11 Indian languages, then type or speak your situation" width="860">
+<img src="docs/screenshot-3-results.png" alt="Scheme Navigator results in Bengali: the extracted profile and an eligibility card for each scheme" width="860">
 
 </div>
 
@@ -38,6 +38,15 @@ and **links to the official sources**. Eligibility is decided by **auditable cod
 | 4. **You get a map** | Each scheme is 🟢 Eligible, 🟡 Likely, 🔵 Needs more info, or 🔴 Not eligible, with the *reasons* |
 | 5. **You get a checklist** | Documents merged across schemes (Aadhaar appears once, with a ✓ if you said you have it) |
 | 6. **You verify** | One click to the official source, with a "last verified" date on every scheme |
+
+### 📸 Screenshots (shown in Bengali)
+
+| 1. Speak or type in your language | 2. It asks only what it needs |
+|---|---|
+| <img src="docs/screenshot-1-input-bengali.png" alt="Input screen in Bengali with the language picker"> | <img src="docs/screenshot-2-follow-up-questions.png" alt="Follow-up questions in Bengali, including whether you own the land or are a tenant or sharecropper"> |
+
+The results screen is at the top of this page: your extracted profile, then one card per scheme with the reasons,
+the documents needed, and a link to the official source.
 
 Notice what it does **not** do: "I have 2 acres" does **not** mean "I own 2 acres". Ownership stays *unknown*
 and the app asks a follow-up question instead of guessing (see [Safety by design](#-safety-by-design)).
