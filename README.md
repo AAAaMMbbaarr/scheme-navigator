@@ -275,6 +275,8 @@ render.yaml              Render blueprint
 - Scheme rules can change; several were drawn from secondary sources (see each YAML file's notes).
 - UI text is fully translated for English, हिन्दी and বাংলা; the other languages cover the core screens and
   fall back to English elsewhere. Native-speaker review is welcome.
+- Land-ownership wording is best covered in English, हिन्दी, বাংলা and मराठी; in the other languages unclear
+  statements stay *unknown* and the app asks a follow-up question.
 - Browser speech quality varies: some languages have no recognition or voice installed.
 - Explanations come from an LLM and can be imperfect; **the eligibility status always comes from the rules engine.**
 
