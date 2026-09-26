@@ -109,12 +109,16 @@ are often more comfortable speaking than typing, and often not in English.
 | **Stateless, no database** | Privacy (the server stores nothing) and a simple deploy as one Render web service. |
 | **Voice-first, 11 languages** | Users can speak in their own language rather than type in English. |
 
+<!-- TODO(Ambar): fill in from real user conversations, then remove this comment wrapper so the subsection shows.
+     Leave empty rows out rather than guessing.
+
 ### What I learned from users
 
-<!-- TODO(Ambar): fill in from real user conversations. Leave empty rows out rather than guessing. -->
 | Who | What confused them | What I changed |
 |---|---|---|
 | TODO(Ambar) | TODO(Ambar) | TODO(Ambar) |
+
+-->
 
 ### What I'd measure if this launched
 
