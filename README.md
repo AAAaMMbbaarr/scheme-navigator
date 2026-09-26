@@ -177,7 +177,9 @@ Free-tier Groq limits can also apply under load; users then see a friendly "busy
 - **The AI never decides eligibility.** Only the rules engine does, and every rule is readable YAML.
 - **No invented ownership.** "I have / मेरे पास / আমার … আছে" leaves land ownership *unknown*. It is set only when
   your own words say so ("I own", "मालिक", "আমার নামে", "rented", "बटाई"...), the model must quote them, and code
-  verifies the quote is real, matches, and isn't negated.
+  verifies the quote is real, matches, and isn't negated. Code also checks the quote in its own sentence:
+  "in my name / আমার নামে" counts only next to a land word, and "owner / मालिक" only when it is about you. So
+  "My name is Ramesh…", "मेरा नाम है…" and "I work on the owner's farm" stay *unknown*, and you are asked.
 - **Fresh by default.** Each new statement is a new profile. The only way to build on an earlier one is the
   explicit "Add or correct your details" box. The server stores nothing.
 - **Nothing is submitted anywhere.** No government portal automation, no CAPTCHA/OTP handling.

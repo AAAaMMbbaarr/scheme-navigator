@@ -249,3 +249,72 @@ def test_drop_is_logged_without_user_text(caplog):
 
 def test_profile_schema_unchanged_by_the_evidence_field():
     assert "land_ownership_evidence" not in Profile.model_fields    # evidence is consumed by the guard, never stored
+
+
+# ============================================================ 8. regressions: self-introductions and other people's ownership
+FALSE_OWNER = [
+    "My name is Ramesh and I have 2 acres of land in West Bengal.",   # matched the old bare `\bmy name\b`
+    "मेरा नाम है रमेश, मेरे पास 2 एकड़ जमीन है",                          # matched the old bare "नाम है"
+    "I work on the owner's farm",                                      # matched the old bare `\bowner`
+    "My landlord is the owner, I farm 2 acres.",
+    "मेरा नाम रमेश मलिक है, मेरे पास 2 एकड़ जमीन है।",                   # surname Malik is not मालिक
+    "रमेश मलिक, मेरे पास 2 एकड़ जमीन है।",
+    "जमीन मेरे पिता के नाम पर है।",                                      # in the father's name
+    "রমেশ নামে একজন কৃষকের ২ বিঘা জমি আছে।",                            # "a farmer named Ramesh"
+    "আমার নামে একটা রেশন কার্ড আছে।",                                    # in my name, but not land
+    "मैं मालिक के खेत पर काम करता हूँ।",                                   # the owner's farm
+    "আমি মালিকের জমিতে কাজ করি।",
+    "I pay house rent in the town.",                                   # house rent is not agricultural tenancy
+    "I don't own any land",
+]
+
+
+@pytest.mark.parametrize("text", FALSE_OWNER)
+def test_self_introductions_and_other_peoples_ownership_are_unknown(text):
+    assert ownership.detect(text) is None
+
+
+@pytest.mark.parametrize("text,evidence", [
+    ("My name is Ramesh and I have 2 acres of land in West Bengal.", "My name"),
+    ("मेरा नाम है रमेश, मेरे पास 2 एकड़ जमीन है", "नाम है"),
+    ("I work on the owner's farm", "owner"),
+    ("I work on the owner's farm", "the owner's farm"),
+    ("My landlord is the owner, I farm 2 acres.", "the owner"),
+    ("रमेश मलिक, मेरे पास 2 एकड़ जमीन है।", "मलिक"),
+    ("जमीन मेरे पिता के नाम पर है।", "नाम पर"),
+    ("রমেশ নামে একজন কৃষকের ২ বিঘা জমি আছে।", "নামে"),
+    ("আমার নামে একটা রেশন কার্ড আছে।", "আমার নামে"),
+    ("मैं मालिक के खेत पर काम करता हूँ।", "मालिक"),
+])
+def test_guard_rejects_owner_claims_on_those_sentences(text, evidence):
+    assert ownership.guard("owner", evidence, text) is None
+
+
+@pytest.mark.parametrize("text,expected", [
+    ("I own 2 acres", "owner"),
+    ("The land is in my name", "owner"),
+    ("जमीन मेरे नाम पर है", "owner"),
+    ("আমার নামে ২ বিঘা জমি আছে", "owner"),
+    ("I am the owner of 2.5 acres.", "owner"),
+    ("I farm 3 acres on rent", "tenant"),
+    ("बटाई पर खेती करता हूँ", "sharecropper"),
+    ("I don't own any land", None),
+])
+def test_explicit_statements_still_work(text, expected):
+    assert ownership.detect(text) == expected
+
+
+@pytest.mark.parametrize("text,claimed,evidence", [
+    ("I own 2 acres", "owner", "I own"),
+    ("The land is in my name", "owner", "in my name"),
+    ("जमीन मेरे नाम पर है", "owner", "मेरे नाम पर"),
+    ("আমার নামে ২ বিঘা জমি আছে", "owner", "আমার নামে"),
+    ("I farm 3 acres on rent", "tenant", "on rent"),
+    ("बटाई पर खेती करता हूँ", "sharecropper", "बटाई पर"),
+])
+def test_guard_keeps_explicit_statements(text, claimed, evidence):
+    assert ownership.guard(claimed, evidence, text) == claimed
+
+
+def test_guard_rejects_negated_ownership():
+    assert ownership.guard("owner", "own", "I don't own any land") is None
