@@ -88,6 +88,44 @@ and the app asks a follow-up question instead of guessing (see [Safety by design
 
 ---
 
+## 🧩 Product decisions
+
+### Problem & user
+
+<!-- TODO(Ambar): confirm or rewrite this wording. -->
+Small farmers and their families in West Bengal who don't know which government schemes they qualify for. They
+are often more comfortable speaking than typing, and often not in English.
+
+### Key trade-offs
+
+| Decision | Why |
+|---|---|
+| **The AI extracts, code decides** | Every status can be traced to a readable YAML rule, and the model can't make up eligibility. |
+| **Unknown is never treated as yes or no** | A wrong "eligible" or "not eligible" costs the user more than one follow-up question. |
+| **PM-JAY left out** | Its eligibility depends on SECC 2011 data that this profile cannot express. |
+| **6 schemes: depth over breadth** | West Bengal plus national farmer schemes, each with sourced rules, documents and follow-up questions. |
+| **Stateless, no database** | Privacy (the server stores nothing) and a simple deploy as one Render web service. |
+| **Voice-first, 11 languages** | Users can speak in their own language rather than type in English. |
+
+### What I learned from users
+
+<!-- TODO(Ambar): fill in from real user conversations. Leave empty rows out rather than guessing. -->
+| Who | What confused them | What I changed |
+|---|---|---|
+| TODO(Ambar) | TODO(Ambar) | TODO(Ambar) |
+
+### What I'd measure if this launched
+
+These are planned metrics, not results. The app does not collect any of them today.
+
+- **Completion rate**: share of sessions that go from input to results.
+- **Follow-up rate**: share of sessions that need at least one follow-up question.
+- **Click-through to official sources**: share of results where the user opens the official link.
+- **Drop-off by language**: where sessions are abandoned, split by the selected language.
+- **"Needs more info" share**: share of scheme results that end as *Needs more info*.
+
+---
+
 ## 🚀 Features
 
 - 🗣️ **Voice-first, multilingual**: speech input and read-aloud in the selected language; switching language
