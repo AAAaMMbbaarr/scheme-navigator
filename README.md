@@ -146,17 +146,19 @@ These are planned metrics, not results. The app does not collect any of them tod
 Defined in [`backend/schemes/`](backend/schemes) as YAML with `official_url`, `last_verified` and
 `verification_notes` (exactly what was read from where).
 
-| Scheme | Level |
-|---|---|
-| PM-KISAN | India |
-| PMFBY (crop insurance) | India |
-| Kisan Credit Card | India |
-| Krishak Bandhu | West Bengal |
-| Swasthya Sathi | West Bengal |
-| Lakshmir Bhandar | West Bengal |
+| Scheme | Level | Verification |
+|---|---|---|
+| PM-KISAN | India | ✅ Official |
+| PMFBY (crop insurance) | India | ⚠️ Secondary |
+| Kisan Credit Card | India | ⚠️ Secondary |
+| Krishak Bandhu | West Bengal | ⚠️ Secondary |
+| Swasthya Sathi | West Bengal | ⚠️ Secondary |
+| Lakshmir Bhandar | West Bengal | ✅ Official |
 
-> Only PM-KISAN's rules were confirmed from an official page; **the others rely on secondary sources and must be
-> verified against official guidelines before real use.** Benefit amounts are deliberately not stored.
+> ✅ **Official**: the rules were read from an official government page (for Lakshmir Bhandar, a West Bengal
+> district government page). ⚠️ **Secondary**: the rules come from secondary sources and **must be verified
+> against official guidelines before real use.** Each YAML file's `verification_notes` starts with this status
+> and says exactly what was read from where. Benefit amounts are deliberately not stored.
 > PM-JAY is intentionally left out: its eligibility depends on SECC 2011 data this profile cannot express.
 
 ---
