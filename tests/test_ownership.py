@@ -318,3 +318,25 @@ def test_guard_keeps_explicit_statements(text, claimed, evidence):
 
 def test_guard_rejects_negated_ownership():
     assert ownership.guard("owner", "own", "I don't own any land") is None
+
+
+# ============================================================ 9. rent must describe the land, not a home or shop
+@pytest.mark.parametrize("text,expected", [
+    ("I pay house rent and have 2 acres", None),
+    ("I live in a rented house and own 2 acres", "owner"),
+    ("I pay rent for my shop and farm 2 acres.", None),
+    ("मैं किराए के मकान में रहता हूँ और मेरे पास 2 एकड़ जमीन है।", None),
+    ("আমি বাড়ি ভাড়া দিই, আমার ২ বিঘা জমি আছে।", None),
+    ("I farm 3 acres on rent", "tenant"),
+    ("I took land on rent.", "tenant"),
+    ("I farm on lease.", "tenant"),
+    ("I cultivate rented land.", "tenant"),
+    ("मैंने 2 एकड़ जमीन किराए पर ली है।", "tenant"),
+])
+def test_rent_counts_only_when_it_describes_the_land(text, expected):
+    assert ownership.detect(text) == expected
+
+
+def test_guard_rejects_tenant_claim_for_house_rent():
+    assert ownership.guard("tenant", "house rent", "I pay house rent and have 2 acres") is None
+    assert ownership.guard("owner", "own 2 acres", "I live in a rented house and own 2 acres") == "owner"

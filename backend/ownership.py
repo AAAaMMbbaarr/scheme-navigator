@@ -18,8 +18,9 @@ Context rules (each one fixes a real false positive):
     ownership.
   * "owner" / मालिक / মালিক ... must be about the speaker: "I am the owner", "I own", "मैं ... मालिक हूँ",
     "আমি ... মালিক". "the owner's farm", "मालिक के खेत", "মালিকের জমি", "my landlord is the owner" are not.
-  * Rent / lease / tenant words need a land or farming word in the same sentence ("I pay house rent" and
-    "বাড়ি ভাড়া" are not agricultural tenancy).
+  * Rent / lease / tenant words must describe the land: a land or farming word within a few words ("on rent",
+    "rented land", "farm on lease") and no house / room / shop / flat word next to it ("I pay house rent and have
+    2 acres", "a rented house", "বাড়ি ভাড়া" are not agricultural tenancy).
 
 Coverage: English, Hindi, Bengali and Marathi have fuller word lists; the other supported languages have the
 most common words. A genuine statement in a language/wording we don't recognise is treated as unknown, which is
@@ -111,6 +112,24 @@ _FARMING_RE = re.compile(
     "|" + _alt(["खेती", "চাষ", "शेती", "کاشت", "వ్యవసాయ", "సాగు", "விவசாய", "சாகுபடி", "ખેતી", "ಕೃಷಿ", "ಬೇಸಾಯ",
                 "ଚାଷ", "കൃഷി"]))
 
+# Rent that is about a home or shop, not land: "house rent", "rented flat", "किराए के मकान", "বাড়ি ভাড়া".
+_DWELLING_RE = re.compile(
+    r"\b(house|houses|home|room|rooms|shop|shops|flat|flats|apartment|apartments|quarters?|hostel|pg)\b"
+    "|" + _alt([
+        "मकान", "घर", "कमरा", "कमरे", "दुकान", "फ्लैट",                              # Hindi
+        "বাড়ি", "বাসা", "ঘর", "দোকান", "ফ্ল্যাট",                                    # Bengali
+        "खोली", "सदनिका",                                                        # Marathi (+ घर, दुकान)
+        "مکان", "گھر", "دکان", "کمرہ",                                              # Urdu
+        "ఇల్లు", "ఇంటి", "గది", "దుకాణం",                                            # Telugu
+        "வீடு", "வீட்டு", "அறை", "கடை",                                               # Tamil
+        "ઘર", "મકાન", "રૂમ", "દુકાન",                                                # Gujarati
+        "ಮನೆ", "ಕೋಣೆ", "ಅಂಗಡಿ",                                                     # Kannada
+        "ଘର", "ଦୋକାନ",                                                             # Odia
+        "വീട്", "മുറി",                                                             # Malayalam
+    ]))
+_RENT_LAND_WINDOW = 4       # a land/farming word must be this close (in words) to the rent word ...
+_RENT_HOME_WINDOW = 3       # ... and no house/room/shop word this close
+
 # Name phrases: first-person possessive + name word + postposition ("मेरे नाम पर", not "पिता के नाम पर").
 _NAME_PHRASES = [
     (["मेरे", "हमारे", "अपने"], ["नाम पर", "नाम पे", "नाम से", "नाम में"]),              # Hindi
@@ -132,6 +151,7 @@ _NAME_RE = re.compile(
 _OWNER_EN_RE = re.compile(
     r"\b(i|we)(\s+(also|still|jointly|now|already|legally|actually|really|personally|do|does|did|not|never)"
     r"|\s+(do|does|did)n['’]?t)*\s+own(s|ed)?\b"
+    r"|\b(i|we)\b[^;]*\band\s+(also\s+)?own\b"                     # "I live in a rented house and own 2 acres"
     r"|\bowned\s+by\s+(me|us|myself)\b"
     r"|\b(i|we)\s+(have|hold)\s+(the\s+)?ownership\b"
     r"|\b(i\s+am|i['’]m|we\s+are|we['’]re|i\s+was)(\s+(the|a|an|sole|joint|legal|registered|rightful|real|actual|"
@@ -189,6 +209,25 @@ def _sentences(norm_text: str) -> list[str]:
     return [s.strip() for s in _SENTENCE_SPLIT.split(norm_text) if s.strip()]
 
 
+def _rents_land(s: str) -> bool:
+    """A rent/lease word that describes the land ("on rent", "rented land", "जमीन किराए पर"), not a home or shop."""
+    starts = [m.start() for m in _LATIN_RE["tenant"].finditer(s)]
+    for w in _INDIC_N["tenant"]:
+        i = s.find(w)
+        while i != -1:
+            starts.append(i)
+            i = s.find(w, i + 1)
+    tokens = s.split(" ")                                    # _norm already collapsed whitespace to single spaces
+    for start in starts:
+        at = s.count(" ", 0, start)                          # index of the token the rent word starts in
+        near = lambda n: tokens[max(0, at - n):at + n + 1]
+        if any(_DWELLING_RE.search(t) for t in near(_RENT_HOME_WINDOW)):
+            continue
+        if any(_LAND_RE.search(t) or _FARMING_RE.search(t) for t in near(_RENT_LAND_WINDOW)):
+            return True
+    return False
+
+
 def _kinds_in_sentence(s: str) -> set[str]:
     """Tenure classes that one normalized sentence really states about the speaker (context rules applied)."""
     kinds = set()
@@ -196,7 +235,7 @@ def _kinds_in_sentence(s: str) -> set[str]:
     first_person = any(tok.strip(_STRIP) in _FIRST_PERSON for tok in s.split())
     if _OWNER_EN_RE.search(s) or (land and _NAME_RE.search(s)) or (first_person and _OWNER_NOUN_RE.search(s)):
         kinds.add("owner")
-    if (land or _FARMING_RE.search(s)) and _loose("tenant", s):
+    if _rents_land(s):
         kinds.add("tenant")
     if _loose("sharecropper", s):
         kinds.add("sharecropper")
