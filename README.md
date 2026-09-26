@@ -15,8 +15,10 @@ and **links to the official sources**. Eligibility is decided by **auditable cod
 
 ### 🔗 **[Try the live demo →](https://scheme-navigator-vf9f.onrender.com)**
 
-<!-- TODO(Ambar): record a ~30s GIF: speak in Bengali → follow-up question → results -->
+<!-- TODO(Ambar): record a ~30s GIF: speak in Bengali → follow-up question → results
+     Then uncomment the line below.
 <img src="docs/demo.gif" alt="30-second demo: a user speaks in Bengali, answers a follow-up question and gets the eligibility results" width="860">
+-->
 
 <sub>Hosted on Render's free tier: the first load after a quiet period can take about a minute to wake up.</sub>
 
