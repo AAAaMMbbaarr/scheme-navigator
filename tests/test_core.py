@@ -133,7 +133,7 @@ class FakeClient:
 def test_extract_uses_claude_output_validated():
     ext = extract_profile("x", client=FakeClient({"state": "West Bengal", "occupation": "farmer",
                                                  "age": "not a number", "bogus": 1}))
-    assert ext.source == "claude" and ext.profile.occupation == "farmer" and ext.profile.age is None
+    assert ext.source == "llm" and ext.profile.occupation == "farmer" and ext.profile.age is None
 
 
 def test_extract_falls_back_when_api_fails():

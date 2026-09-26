@@ -48,7 +48,7 @@ def test_bengali_extraction(client, use_claude):
     d = client.post("/api/analyze", json={"text": BN_TEXT, "language": "bn"}).json()
     p = d["profile"]
     assert (p["state"], p["occupation"], p["land_area_acres"]) == ("West Bengal", "farmer", 2)
-    assert d["extraction_source"] == "claude" and d["ai"]["ok"] is True
+    assert d["extraction_source"] == "llm" and d["ai"]["ok"] is True
 
 
 # D. Hindi extraction

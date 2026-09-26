@@ -31,7 +31,7 @@ function startStub() {
       is_income_taxpayer: null, is_govt_employee: null };
     const q = ["Is anyone in your family a government employee or pensioner?"];
     return {
-      profile, mode: body.mode, language: body.language, extraction_source: "claude",
+      profile, mode: body.mode, language: body.language, extraction_source: "llm",
       ai: { ok: true, code: null, message: null },
       report: { profile, follow_up_fields: ["is_govt_employee"], follow_up_questions: q,
         checklist: [{ document: "Aadhaar", have: true, needed_for: ["PM-KISAN (Pradhan Mantri Kisan Samman Nidhi)"] }],

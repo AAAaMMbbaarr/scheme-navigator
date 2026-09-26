@@ -194,7 +194,7 @@ def test_bengali_hindi_english_extraction_through_groq_path(groq, client):
     en = post(client, "I am a farmer from West Bengal with 2 acres of land.", "en").json()
     assert (bn["profile"]["state"], bn["profile"]["occupation"], bn["profile"]["land_area_acres"]) == ("West Bengal", "farmer", 2)
     assert (hi["profile"]["state"], hi["profile"]["occupation"], hi["profile"]["land_area_acres"]) == ("Bihar", "farmer", 2)
-    assert en["profile"]["state"] == "West Bengal" and en["extraction_source"] == "claude"
+    assert en["profile"]["state"] == "West Bengal" and en["extraction_source"] == "llm"
 
 
 def test_groq_output_is_still_strictly_validated(groq, client):
@@ -251,7 +251,7 @@ def test_explanation_failure_keeps_engine_results(monkeypatch, groq, client):
     real = httpx.Client
     monkeypatch.setattr(llm.httpx, "Client", lambda **k: real(**{**k, "transport": mock.transport}))
     d = post(client, BN, "bn").json()
-    assert d["extraction_source"] == "claude" and d["ai"]["code"] == "api_error" and d["report"]["results"]
+    assert d["extraction_source"] == "llm" and d["ai"]["code"] == "api_error" and d["report"]["results"]
 
 
 # 8. missing key
