@@ -91,7 +91,7 @@ def test_extraction_ok_but_explanation_fails_still_returns_engine_results(client
                                   "land_ownership": "owner", "land_ownership_evidence": "আমার নামে"}},
                fail_tools=["localized_text"])
     d = client.post("/api/analyze", json={"text": OWN_BN, "language": "bn"}).json()
-    assert d["extraction_source"] == "claude"  # extraction really came from Claude
+    assert d["extraction_source"] == "llm"  # extraction really came from the LLM
     assert d["localized"]["localized"] is False and d["localized"]["error_code"] == "api_error"
     assert d["ai"]["ok"] is False and d["ai"]["code"] == "api_error"
     assert d["language"] == "bn"                                     # language preserved
@@ -107,7 +107,7 @@ def test_invalid_explanation_shape_is_invalid_response(client, use_claude):
     use_claude(profiles={OWN_BN: COMPLETE}, raw={"localized_text": {"nonsense": True}})
     d = client.post("/api/analyze", json={"text": OWN_BN, "language": "bn"}).json()
     assert d["ai"]["code"] == "invalid_response" and d["localized"]["localized"] is False
-    assert d["extraction_source"] == "claude" and d["report"]["results"]
+    assert d["extraction_source"] == "llm" and d["report"]["results"]
 
 
 def test_wrong_number_of_translated_questions_is_rejected(client, use_claude):

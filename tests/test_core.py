@@ -133,7 +133,7 @@ class FakeClient:
 def test_extract_uses_claude_output_validated():
     ext = extract_profile("x", client=FakeClient({"state": "West Bengal", "occupation": "farmer",
                                                  "age": "not a number", "bogus": 1}))
-    assert ext.source == "claude" and ext.profile.occupation == "farmer" and ext.profile.age is None
+    assert ext.source == "llm" and ext.profile.occupation == "farmer" and ext.profile.age is None
 
 
 def test_extract_falls_back_when_api_fails():
@@ -226,3 +226,24 @@ def test_govt_employee_excluded_from_pm_kisan():
 def test_every_scheme_has_source_and_date_and_note():
     for s in load_schemes():
         assert s.official_url and s.last_verified and s.verification_notes.strip()
+
+
+README_SCHEME_ROWS = {"PM-KISAN": "pm_kisan", "PMFBY (crop insurance)": "pmfby", "Kisan Credit Card": "kisan_credit_card",
+                      "Krishak Bandhu": "krishak_bandhu", "Swasthya Sathi": "swasthya_sathi",
+                      "Lakshmir Bhandar": "lakshmir_bhandar"}
+
+
+def test_readme_verification_column_matches_scheme_notes():
+    """Each YAML states OFFICIAL or SECONDARY first, and the README 'Schemes covered' table says the same."""
+    readme = (SCHEMES_DIR.parents[1] / "README.md").read_text(encoding="utf-8")
+    shown = {}
+    for line in readme.splitlines():
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) == 3 and cells[0] in README_SCHEME_ROWS:
+            shown[README_SCHEME_ROWS[cells[0]]] = cells[2]
+    schemes = {s.id: s for s in load_schemes()}
+    assert set(shown) == set(schemes)
+    for sid, s in schemes.items():
+        status = s.verification_notes.split(".")[0]
+        assert status in ("Verification: OFFICIAL", "Verification: SECONDARY"), sid
+        assert shown[sid] == ("✅ Official" if status.endswith("OFFICIAL") else "⚠️ Secondary"), sid

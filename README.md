@@ -15,6 +15,11 @@ and **links to the official sources**. Eligibility is decided by **auditable cod
 
 ### 🔗 **[Try the live demo →](https://scheme-navigator-vf9f.onrender.com)**
 
+<!-- TODO(Ambar): record a ~30s GIF: speak in Bengali → follow-up question → results
+     Then uncomment the line below.
+<img src="docs/demo.gif" alt="30-second demo: a user speaks in Bengali, answers a follow-up question and gets the eligibility results" width="860">
+-->
+
 <sub>Hosted on Render's free tier: the first load after a quiet period can take about a minute to wake up.</sub>
 
 <img src="docs/screenshot-3-results.png" alt="Scheme Navigator results in Bengali: the extracted profile and an eligibility card for each scheme" width="860">
@@ -85,6 +90,48 @@ and the app asks a follow-up question instead of guessing (see [Safety by design
 
 ---
 
+## 🧩 Product decisions
+
+### Problem & user
+
+<!-- TODO(Ambar): confirm or rewrite this wording. -->
+Small farmers and their families in West Bengal who don't know which government schemes they qualify for. They
+are often more comfortable speaking than typing, and often not in English.
+
+### Key trade-offs
+
+| Decision | Why |
+|---|---|
+| **The AI extracts, code decides** | Every status can be traced to a readable YAML rule, and the model can't make up eligibility. |
+| **Unknown is never treated as yes or no** | A wrong "eligible" or "not eligible" costs the user more than one follow-up question. |
+| **PM-JAY left out** | Its eligibility depends on SECC 2011 data that this profile cannot express. |
+| **6 schemes: depth over breadth** | West Bengal plus national farmer schemes, each with sourced rules, documents and follow-up questions. |
+| **Stateless, no database** | Privacy (the server stores nothing) and a simple deploy as one Render web service. |
+| **Voice-first, 11 languages** | Users can speak in their own language rather than type in English. |
+
+<!-- TODO(Ambar): fill in from real user conversations, then remove this comment wrapper so the subsection shows.
+     Leave empty rows out rather than guessing.
+
+### What I learned from users
+
+| Who | What confused them | What I changed |
+|---|---|---|
+| TODO(Ambar) | TODO(Ambar) | TODO(Ambar) |
+
+-->
+
+### What I'd measure if this launched
+
+These are planned metrics, not results. The app does not collect any of them today.
+
+- **Completion rate**: share of sessions that go from input to results.
+- **Follow-up rate**: share of sessions that need at least one follow-up question.
+- **Click-through to official sources**: share of results where the user opens the official link.
+- **Drop-off by language**: where sessions are abandoned, split by the selected language.
+- **"Needs more info" share**: share of scheme results that end as *Needs more info*.
+
+---
+
 ## 🚀 Features
 
 - 🗣️ **Voice-first, multilingual**: speech input and read-aloud in the selected language; switching language
@@ -105,17 +152,19 @@ and the app asks a follow-up question instead of guessing (see [Safety by design
 Defined in [`backend/schemes/`](backend/schemes) as YAML with `official_url`, `last_verified` and
 `verification_notes` (exactly what was read from where).
 
-| Scheme | Level |
-|---|---|
-| PM-KISAN | India |
-| PMFBY (crop insurance) | India |
-| Kisan Credit Card | India |
-| Krishak Bandhu | West Bengal |
-| Swasthya Sathi | West Bengal |
-| Lakshmir Bhandar | West Bengal |
+| Scheme | Level | Verification |
+|---|---|---|
+| PM-KISAN | India | ✅ Official |
+| PMFBY (crop insurance) | India | ⚠️ Secondary |
+| Kisan Credit Card | India | ⚠️ Secondary |
+| Krishak Bandhu | West Bengal | ⚠️ Secondary |
+| Swasthya Sathi | West Bengal | ⚠️ Secondary |
+| Lakshmir Bhandar | West Bengal | ✅ Official |
 
-> Only PM-KISAN's rules were confirmed from an official page; **the others rely on secondary sources and must be
-> verified against official guidelines before real use.** Benefit amounts are deliberately not stored.
+> ✅ **Official**: the rules were read from an official government page (for Lakshmir Bhandar, a West Bengal
+> district government page). ⚠️ **Secondary**: the rules come from secondary sources and **must be verified
+> against official guidelines before real use.** Each YAML file's `verification_notes` starts with this status
+> and says exactly what was read from where. Benefit amounts are deliberately not stored.
 > PM-JAY is intentionally left out: its eligibility depends on SECC 2011 data this profile cannot express.
 
 ---
@@ -177,7 +226,9 @@ Free-tier Groq limits can also apply under load; users then see a friendly "busy
 - **The AI never decides eligibility.** Only the rules engine does, and every rule is readable YAML.
 - **No invented ownership.** "I have / मेरे पास / আমার … আছে" leaves land ownership *unknown*. It is set only when
   your own words say so ("I own", "मालिक", "আমার নামে", "rented", "बटाई"...), the model must quote them, and code
-  verifies the quote is real, matches, and isn't negated.
+  verifies the quote is real, matches, and isn't negated. Code also checks the quote in its own sentence:
+  "in my name / আমার নামে" counts only next to a land word, and "owner / मालिक" only when it is about you. So
+  "My name is Ramesh…", "मेरा नाम है…" and "I work on the owner's farm" stay *unknown*, and you are asked.
 - **Fresh by default.** Each new statement is a new profile. The only way to build on an earlier one is the
   explicit "Add or correct your details" box. The server stores nothing.
 - **Nothing is submitted anywhere.** No government portal automation, no CAPTCHA/OTP handling.
@@ -224,8 +275,16 @@ render.yaml              Render blueprint
 - Scheme rules can change; several were drawn from secondary sources (see each YAML file's notes).
 - UI text is fully translated for English, हिन्दी and বাংলা; the other languages cover the core screens and
   fall back to English elsewhere. Native-speaker review is welcome.
+- Land-ownership wording is best covered in English, हिन्दी, বাংলা and मराठी; in the other languages unclear
+  statements stay *unknown* and the app asks a follow-up question.
 - Browser speech quality varies: some languages have no recognition or voice installed.
 - Explanations come from an LLM and can be imperfect; **the eligibility status always comes from the rules engine.**
+
+---
+
+## 📄 License
+
+[MIT](LICENSE) © 2026 Ambar Banerjee
 
 ---
 

@@ -77,7 +77,7 @@ SYSTEM = (
 @dataclass
 class Extraction:
     profile: Profile
-    source: str                 # "claude" | "offline_english"
+    source: str                 # "llm" (Anthropic or Groq) | "offline_english"
     error: AIError | None = None  # set when we had to degrade
 
 
@@ -168,7 +168,7 @@ def extract_profile(text: str, language: str = "en", client: Any = None,
         content += f"<user_text>{text}</user_text>"
         raw = call_tool(client, system=SYSTEM, tool=EXTRACT_TOOL, user_content=content,
                         max_tokens=600, purpose=f"extract[{lang.code}]")
-        return Extraction(parse_llm_profile(raw, text), "claude")
+        return Extraction(parse_llm_profile(raw, text), "llm")
     except AIError as err:
         if lang.code == "en":
             return Extraction(_fallback_extract(text), "offline_english", err)

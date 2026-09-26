@@ -68,7 +68,7 @@ function startStub(profileFor) {
         const body = JSON.parse(raw); calls.push(body);
         const profile = { state: null, occupation: null, age: null, gender: null, land_area_acres: null, land_ownership: null, crop: null,
           annual_family_income: null, has_aadhaar: null, has_bank_account: null, is_income_taxpayer: null, is_govt_employee: null, ...profileFor(body.text) };
-        return send({ profile, mode: body.mode, language: body.language, extraction_source: "claude", ai: { ok: true },
+        return send({ profile, mode: body.mode, language: body.language, extraction_source: "llm", ai: { ok: true },
           report: { profile, results: [], follow_up_fields: [], follow_up_questions: [], checklist: [], disclaimer: "d" },
           localized: { summary: "", follow_up_questions: [], scheme_explanations: {}, localized: true, error_code: null } });
       }

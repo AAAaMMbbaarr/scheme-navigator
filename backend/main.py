@@ -117,7 +117,7 @@ class AnalyzeResponse(BaseModel):
     profile: Profile
     mode: str
     language: str
-    extraction_source: str        # "claude" | "offline_english" | "provided"
+    extraction_source: str        # "llm" | "offline_english" | "provided"
     report: EligibilityReport
     localized: dict
     ai: AIStatus
