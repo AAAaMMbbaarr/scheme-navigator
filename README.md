@@ -231,6 +231,12 @@ render.yaml              Render blueprint
 
 ---
 
+## 📄 License
+
+[MIT](LICENSE) © 2026 Ambar Banerjee
+
+---
+
 <div align="center">
 
 Built to make government schemes easier to find, understand and prepare for. 🇮🇳
